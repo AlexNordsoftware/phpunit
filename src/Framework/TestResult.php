@@ -25,6 +25,7 @@ final class TestResult implements Countable
      * @psalm-var array<string,array{result: mixed, size: \PHPUnit\Framework\TestSize\TestSize}>
      */
     private array $passed = [];
+    private $topTestSuite = null;
 
     /**
      * @psalm-var list<string>
@@ -229,11 +230,16 @@ final class TestResult implements Countable
 
     public function startTestSuite(TestSuite $suite): void
     {
+        $this->topTestSuite = $suite;
         $this->currentTestSuiteFailed = false;
 
         foreach ($this->listeners as $listener) {
             $listener->startTestSuite($suite);
         }
+    }
+    
+    public function toptestSuite() {
+        return $this->topTestSuite;
     }
 
     public function endTestSuite(TestSuite $suite): void
